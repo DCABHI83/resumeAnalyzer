@@ -89,7 +89,7 @@ const HowitWorks = () => {
             <div className='h-full p-8 bg-white/30 backdrop-blur-lg border border-white/40 rounded-3xl shadow-xl hover:shadow-2xl transition-shadow duration-300'>
               
               {/* Step Number */}
-              <div className='absolute -top-4 -left-4 w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center text-white font-bold text-xl shadow-lg'>
+              <div className='absolute -top-4 -left-4 w-16 h-16 bg-linear-to-br from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center text-white font-bold text-xl shadow-lg'>
                 {step.number}
               </div>
 
@@ -108,7 +108,7 @@ const HowitWorks = () => {
 
               {/* Connecting Line (except last card) */}
               {index < steps.length - 1 && (
-                <div className='hidden lg:block absolute top-1/2 -right-8 w-8 h-0.5 bg-gradient-to-r from-purple-500 to-transparent' />
+                <div className='hidden lg:block absolute top-1/2 -right-8 w-8 h-0.5 bg-linear-to-r from-purple-500 to-transparent' />
               )}
             </div>
           </motion.div>
@@ -123,13 +123,15 @@ const HowitWorks = () => {
         transition={{ delay: 1.2, duration: 0.6 }}
         className='mt-16'
       >
-        <motion.button
+        <motion.div
           whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className='px-10 py-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-lg font-semibold rounded-full shadow-xl hover:shadow-2xl transition-shadow duration-300'
+          whileTap={{ scale: 0.95 }} 
         >
-          Start Analyzing Now
-        </motion.button>
+          <NavLink to={'/playground'} className='px-10 py-5 bg-linear-to-r from-blue-600 to-purple-600 text-white text-lg font-semibold rounded-full shadow-xl hover:shadow-2xl transition-shadow duration-300'>
+ Start Analyzing Now
+          </NavLink>
+         
+        </motion.div>
       </motion.div>
     </div>
   );

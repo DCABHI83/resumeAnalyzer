@@ -2,11 +2,12 @@ import React, { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import { NavLink } from 'react-router-dom';
 
 const Hero = () => {
   const headingRef = useRef(null);
 
-  // GSAP animation for gradient text
+  // GSAP animation for linear text
   useGSAP(() => {
     gsap.to(headingRef.current, {
       backgroundPosition: '200% center',
@@ -66,7 +67,7 @@ const Hero = () => {
     >
       <div className='flex flex-col justify-center items-center gap-6 max-w-5xl'>
         
-        {/* Main Heading with GSAP animated gradient */}
+        {/* Main Heading with GSAP animated linear */}
         <motion.h1
           ref={headingRef}
           variants={itemVariants}
@@ -96,14 +97,19 @@ const Hero = () => {
           variants={itemVariants}
           className='flex gap-4 mt-6 flex-wrap justify-center'
         >
-          <motion.button
-            variants={buttonVariants}
-            whileHover="hover"
-            whileTap="tap"
-            className='px-8 py-4 bg--to-r from-blue-600 to-purple-600 text-white font-semibold rounded-full shadow-lg hover:shadow-2xl transition-shadow duration-300'
-          >
-            Get Started Free
-          </motion.button>
+          <motion.div
+  variants={buttonVariants}
+  whileHover="hover"
+  whileTap="tap"
+>
+  <NavLink
+    className='px-8 py-4 bg-linear-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-full shadow-lg hover:shadow-2xl transition-shadow duration-300 inline-block'
+    to='/playground'
+  >
+    Get Started Free
+  </NavLink>
+</motion.div>
+
           
           <motion.button
             variants={buttonVariants}
