@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Login = () => {
-  const [activeTab, setActiveTab] = useState('login'); // 'login' or 'signup'
+  const [activeTab, setActiveTab] = useState('login'); 
   const [user, setUser] = useState({
     email: '',
     password: '',
@@ -19,9 +19,18 @@ const Login = () => {
     console.log(user);
   };
 
-  const handleSignupSubmit = (e) => {
-    e.preventDefault();
-    console.log(signupUser);
+  const handleSignupSubmit = async(e) => {
+   try {
+    const res = await fetch("https://localhost:500/api/v1/signup",{
+      method:"POST",
+      headers:{
+        'Content-Type':"application/json"
+      },
+      
+    })
+   } catch (error) {
+    
+   }
   };
 
   const handleChange = (e) => {
