@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { toast } from 'react-toastify';
 
 const Login = () => {
   const [activeTab, setActiveTab] = useState('login'); 
@@ -21,15 +22,26 @@ const Login = () => {
 
   const handleSignupSubmit = async(e) => {
    try {
-    const res = await fetch("https://localhost:500/api/v1/signup",{
+    e.preventDefault()
+    if(signupUser.password !== signupUser.confirmPassword){
+    toast.error("password didnt match")
+    }
+    const res = await fetch("http://localhost:3000/api/v1/signup",{
       method:"POST",
       headers:{
         'Content-Type':"application/json"
       },
-      
+      body:JSON.stringify({
+       name:signupUser.name,
+       email:signupUser.email,
+       password:signupUser.password,
+      })
     })
+  const data = await res.json()
+  console.log(data)
    } catch (error) {
-    
+    console.log(error.message)
+  
    }
   };
 
