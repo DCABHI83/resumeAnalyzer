@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-toastify';
-
+import {useNavigate} from 'react-router-dom'
 const Login = () => {
   const [activeTab, setActiveTab] = useState('login'); 
   const [user, setUser] = useState({
@@ -15,9 +15,30 @@ const Login = () => {
     confirmPassword: '',
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(user);
+  const navigate = useNavigate()
+
+  const handleSubmit =async (e) => {
+  try {
+    e.preventDefault()
+    const res = await fetch('http://localhost:3000/api/v1/login',{
+      method:"POST",
+      credentials:"include",
+      headers:{
+"Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        email:user.email,
+        password:user.password
+      })
+    })
+   if(res.status === 200){
+    const data= await res.json()
+    toast.success(data.message)
+   navigate('/')
+   }
+  } catch (error) {
+    toast.error(error.message)
+  }
   };
 
   const handleSignupSubmit = async(e) => {
