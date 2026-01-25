@@ -83,3 +83,30 @@ export const loginUser = async (req, res) => {
       .json({ message: "Inernal servor error", error: error.message });
   }
 };
+
+//logout user
+
+export const logoutUser = async(req,res)=>{
+  await User.findByIdAndUpdate(
+    req.user._id,
+  {
+    $set :{
+      refreshToken : undefined,
+    },
+    
+  },
+  {
+    new : true
+  }
+  )
+ const options = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV,
+      sameSite : "strict",
+       maxAge: 7 * 24 * 60 * 60 * 1000
+    };
+
+    return res.status(200).clearCookie('accessToken',options).clearCookie("refreshToken",options).json({message:"user logged out successfully"})
+  
+  
+}

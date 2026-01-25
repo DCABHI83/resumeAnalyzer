@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import User from '../models/usermodel'
+import User from '../models/usermodel.js'
 
 
 export const verifyToken = async(req,res,next)=>{
@@ -14,6 +14,7 @@ export const verifyToken = async(req,res,next)=>{
             return res.status(404).json({message:"user not found"})
         }
         req.user = user
+        next()
     } catch (error) {
         return res.status(500).json({message:"Something went wrong",error:error.message})
     }
