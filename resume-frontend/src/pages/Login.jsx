@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-toastify';
-import {useNavigate} from 'react-router-dom'
+import {data, useNavigate} from 'react-router-dom'
 const Login = () => {
   const [activeTab, setActiveTab] = useState('login'); 
   
@@ -32,12 +32,20 @@ const Login = () => {
         password:user.password
       })
     })
-   if(res.status === 200){
-    const data= await res.json()
+  const data =await res.json()
+  if(res.status === 200){
     toast.success(data.message)
-   navigate('/')
+    navigate('/')
+  }
+  if(res.status != 200){
+    toast.error(data.message)
+  }
    }
-  } catch (error) {
+
+  
+  
+  
+  catch (error) {
     toast.error(error.message)
   }
   };
@@ -60,9 +68,15 @@ const Login = () => {
       })
     })
   const data = await res.json()
-  console.log(data)
+ if(res.status === 201){
+  toast.success(data.message)
+ }
+ if(res.status != 201){
+  toast.error(data.message)
+ }
+
    } catch (error) {
-    console.log(error.message)
+   toast.error(error.message)
   
    }
   };

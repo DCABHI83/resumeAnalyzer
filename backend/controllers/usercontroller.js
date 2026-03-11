@@ -50,7 +50,7 @@ export const loginUser = async (req, res) => {
     if (!comparePassword) {
       return res.status(401).json({ message: "invalid credentials" });
     }
-    const accesstoken = jwt.sign(
+    const accessToken = jwt.sign(
       { id: user._id },
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: "7d" }
@@ -70,11 +70,11 @@ export const loginUser = async (req, res) => {
     };
     res
       .status(200)
-      .cookie("accessToken", accesstoken, options)
+      .cookie("accessToken", accessToken, options)
       .cookie("refresh_token", refresh_Token, options)
       .json({
         message: `welcome ${user.name}`,
-        token: accesstoken,
+        token: accessToken,
         refresh_Token,
       });
   } catch (error) {
@@ -87,26 +87,48 @@ export const loginUser = async (req, res) => {
 //logout user
 
 export const logoutUser = async(req,res)=>{
-  await User.findByIdAndUpdate(
-    req.user._id,
-  {
-    $set :{
-      refreshToken : undefined,
-    },
-    
-  },
-  {
-    new : true
-  }
-  )
- const options = {
-      httpOnly: true,
-      secure: process.env.NODE_ENV,
-      sameSite : "strict",
-       maxAge: 7 * 24 * 60 * 60 * 1000
-    };
+ try {
+   await User.findByIdAndUpdate(
+     req.user._id,
+   {
+     $set :{
+       refreshToken : undefined,
+     },
+     
+   },
+   {
+     new : true
+   }
+   )
+  const options = {
+       httpOnly: true,
+       secure: process.env.NODE_ENV,
+       sameSite : "strict",
+        maxAge: 7 * 24 * 60 * 60 * 1000
+     };
+ 
+     return res.status(200).clearCookie('accessToken',options).clearCookie("refreshToken",options).json({message:"user logged out successfully"})
+   
+   
+ } catch (error) {
+  return res.status(500).json({message:"something went wrong"})
+ }
+}
 
-    return res.status(200).clearCookie('accessToken',options).clearCookie("refreshToken",options).json({message:"user logged out successfully"})
-  
-  
+
+//getuser
+
+export const getUser = async(req,res)=>{
+ try {
+   const user = req.user
+   console.log(user)
+   const existinguser = await user.findOne({email})
+   if(!existinguser){
+     return res.status(400).json({message:"user does not exist"})
+   }
+   return res.status(200).json({user})
+ } catch (error) {
+  return  res.status(500).json({message:"something went wrong"})
+ }
+
 }
